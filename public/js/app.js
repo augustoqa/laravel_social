@@ -49970,6 +49970,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { on: { click: _vm.redirectIfGuest } },
     _vm._l(_vm.statuses, function(status) {
       return _c("div", { staticClass: "card mb-3 border-0 shadow-sm" }, [
         _c("div", { staticClass: "card-body d-flex flex-column" }, [
@@ -50075,6 +50076,11 @@ module.exports = {
         },
         guest: function guest() {
             return !this.isAuthenticated;
+        }
+    },
+    methods: {
+        redirectIfGuest: function redirectIfGuest() {
+            if (this.guest) return window.location.href = '/login';
         }
     }
 };
