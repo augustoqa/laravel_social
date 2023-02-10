@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Status;
+use App\Models\Comment;
 use App\Models\Like;
+use App\Models\Status;
 use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class StatusTest extends TestCase
 {
@@ -19,6 +20,16 @@ class StatusTest extends TestCase
         $status = factory(Status::class)->create();
 
         $this->assertInstanceOf(User::class, $status->user);
+    }
+
+    /** @test */
+    function a_status_has_many_comments()
+    {
+        $status = factory(Status::class)->create();
+
+        factory(Comment::class)->create(['status_id' => $status->id]);
+
+        $this->assertInstanceOf(Comment::class, $status->comments->first());
     }
 
     /** @test */
