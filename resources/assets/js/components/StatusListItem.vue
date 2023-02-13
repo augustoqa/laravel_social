@@ -42,6 +42,7 @@
                             name="comment"
                             placeholder="Escribe un comentario"
                             rows="1"
+                            required
                         ></textarea>
                         <div class="input-group-append">
                             <button dusk="comment-btn" class="btn btn-primary">Enviar</button>
@@ -76,6 +77,9 @@ export default {
                 .then(res => {
                     this.newComment = ''
                     this.comments.push(res.data.data)
+                })
+                .catch(err => {
+                    console.log(err.response.data)
                 })
         },
     }

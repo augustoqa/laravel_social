@@ -6,7 +6,8 @@
                 v-model="body"
                 name="body"
                 class="form-control border-0 bg-light"
-                :placeholder="`¿Qué estás pensando ${currentUser.name}?`"></textarea>
+                :placeholder="`¿Qué estás pensando ${currentUser.name}?`"
+                required></textarea>
         </div>
         <div class="card-footer">
             <button class="btn btn-primary" id="create-status">
