@@ -26,7 +26,7 @@ export default {
             axios[method](this.url) 
                 .then(res => {
                     this.model.is_liked = ! this.model.is_liked
-                    if (this.model.is_liked) {
+                    if (method === 'delete') {
                         this.model.likes_count--
                     } else {
                         this.model.likes_count++
@@ -54,6 +54,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.comments-like-btn {
+    font-size: 0.8em;
+    padding-left: 0;
+    i { display: none }
+}
 </style>
