@@ -50327,14 +50327,18 @@ var render = function() {
       _c("div", { staticClass: "d-flex align-items-center mb-3" }, [
         _c("img", {
           staticClass: "mr-3",
-          attrs: { width: "40", src: _vm.status.user_avatar, alt: "" }
+          attrs: {
+            width: "40",
+            src: _vm.status.user.avatar,
+            alt: _vm.status.user.name
+          }
         }),
         _vm._v(" "),
         _c("div", [
           _c("h5", { staticClass: "mb-1" }, [
             _c("a", {
-              attrs: { href: _vm.status.user_link },
-              domProps: { textContent: _vm._s(_vm.status.user_name) }
+              attrs: { href: _vm.status.user.link },
+              domProps: { textContent: _vm._s(_vm.status.user.name) }
             })
           ]),
           _vm._v(" "),
@@ -50387,8 +50391,8 @@ var render = function() {
               _c("img", {
                 staticClass: "shadow-sm mr-2",
                 attrs: {
-                  src: comment.user_avatar,
-                  alt: comment.user_name,
+                  src: comment.user.avatar,
+                  alt: comment.user.name,
                   width: "34px",
                   height: "34px"
                 }
@@ -50400,8 +50404,8 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card border-0 shadow-sm" }, [
                     _c("div", { staticClass: "card-body p-2 text-secondary" }, [
-                      _c("a", { attrs: { href: comment.user_link } }, [
-                        _c("strong", [_vm._v(_vm._s(comment.user_name))])
+                      _c("a", { attrs: { href: comment.user.link } }, [
+                        _c("strong", [_vm._v(_vm._s(comment.user.name))])
                       ]),
                       _vm._v(
                         "\n                            " +
