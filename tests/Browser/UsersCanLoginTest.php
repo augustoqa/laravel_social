@@ -7,7 +7,7 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class LoginTest extends DuskTestCase
+class UsersCanLoginTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
@@ -20,9 +20,21 @@ class LoginTest extends DuskTestCase
             $browser->visit('/login')
                     ->type('email', 'cesar@mail.com')
                     ->type('password', 'secret')
-                    ->press('#login-btn')
+                    ->press('@login-btn')
                     ->assertPathIs('/')
                     ->assertAuthenticated();
+        });
+    }
+
+    /** @test */
+    function user_cannot_login_with_invalid_information()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(route('login'))
+                ->type('email', '')
+                ->press('@login-btn')
+                ->assertPathIs('/login')
+                ->assertPresent('@validation-errors');
         });
     }
 }
