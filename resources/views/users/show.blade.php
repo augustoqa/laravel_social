@@ -9,6 +9,9 @@
                     <div class="card-body">
                         <div class="card-title">
                             {{ $user->name }}
+                            <friendship-btn
+                                class="btn btn-primary btn-block"
+                                :recipient="{{ $user }}"></friendship-btn>
                         </div>
                     </div>
                 </div>
