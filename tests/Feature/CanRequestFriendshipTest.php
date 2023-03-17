@@ -37,6 +37,10 @@ class CanRequestFriendshipTest extends TestCase
             'recipient_id' => $recipient->id,
             'status' => 'pending',
         ]);
+
+        $this->actingAs($sender)
+            ->postJson(route('friendships.store', $recipient));
+        $this->assertCount(1, Friendship::all());
     }
 
     /** @test */
