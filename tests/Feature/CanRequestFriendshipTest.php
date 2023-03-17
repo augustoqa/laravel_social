@@ -29,8 +29,12 @@ class CanRequestFriendshipTest extends TestCase
         $sender = factory(User::class)->create();
         $recipient = factory(User::class)->create();
 
-        $this->actingAs($sender)
+        $response = $this->actingAs($sender)
             ->postJson(route('friendships.store', $recipient));
+
+        $response->assertJson([
+            'friendship_status' => 'pending',
+        ]);
 
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
@@ -66,8 +70,12 @@ class CanRequestFriendshipTest extends TestCase
             'recipient_id' => $recipient->id,
         ]);
 
-        $this->actingAs($sender)
+        $response = $this->actingAs($sender)
             ->deleteJson(route('friendships.destroy', $recipient));
+
+        $response->assertJson([
+            'friendship_status' => 'deleted',
+        ]);
 
         $this->assertDatabaseMissing('friendships', [
             'sender_id' => $sender->id,

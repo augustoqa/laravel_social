@@ -10,8 +10,11 @@
                         <div class="card-title">
                             {{ $user->name }}
                             <friendship-btn
+                                :recipient="{{ $user }}"
+                                friendship-status="{{ $friendshipStatus }}"
+                                dusk="request-friendship"
                                 class="btn btn-primary btn-block"
-                                :recipient="{{ $user }}"></friendship-btn>
+                            ></friendship-btn>
                         </div>
                     </div>
                 </div>
