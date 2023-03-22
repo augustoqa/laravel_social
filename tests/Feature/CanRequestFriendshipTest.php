@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Modes\Friendship;
+use App\Models\Friendship;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

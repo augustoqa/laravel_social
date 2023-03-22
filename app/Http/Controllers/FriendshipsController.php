@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Modes\Friendship;
+use App\Models\Friendship;
 use App\User;
 use Illuminate\Http\Request;
 
