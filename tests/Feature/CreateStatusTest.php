@@ -27,20 +27,12 @@ class CreateStatusTest extends TestCase
     public function an_authenticated_user_can_create_statuses()
     {
         Event::fake([StatusCreated::class]);
-
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $response = $this->postJson(route('statuses.store'), ['body' => 'Mi primer status']);
-
-        Event::assertDispatched(StatusCreated::class, function ($e) {
-            return $e->status->id === Status::first()->id
-                && $e->status instanceof StatusResource
-                && $e->status->resource instanceof Status
-                && $e instanceof ShouldBroadcast;
-        });
 
         $response->assertJson([
             'data' => ['body' => 'Mi primer status'],
@@ -50,6 +42,30 @@ class CreateStatusTest extends TestCase
             'user_id' => $user->id,
             'body' => 'Mi primer status'
         ]);
+    }
+
+    /** @test */
+    function an_event_is_fired_when_a_status_is_created()
+    {
+        Event::fake([StatusCreated::class]);
+        \Broadcast::shouldReceive('socket')->andReturn('socket-id');
+
+        $this->actingAs(factory(User::class)->create())
+            ->postJson(route('statuses.store'), ['body' => 'Mi primer status']);
+
+        Event::assertDispatched(StatusCreated::class, function ($statusCreatedEvent) {
+            $this->assertInstanceOf(ShouldBroadcast::class, $statusCreatedEvent);
+            $this->assertInstanceOf(StatusResource::class, $statusCreatedEvent->status);
+            $this->assertInstanceOf(Status::class, $statusCreatedEvent->status->resource);
+            $this->assertEquals(Status::first()->id, $statusCreatedEvent->status->id);
+            $this->assertEquals(
+                'socket-id',
+                $statusCreatedEvent->socket,
+                'The event ' . get_class($statusCreatedEvent) . ' must call the method "dontBroadcastToCurrentUser" in the constructor.'
+            );
+            return true;
+        });
+
     }
 
     /** @test */
