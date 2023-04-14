@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentCreated;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Status;
@@ -14,13 +15,17 @@ class StatusCommentsController extends Controller
         request()->validate([
             'body' => 'required',
         ]);
-        
+
         $comment = Comment::create([
             'user_id' => auth()->id(),
             'status_id' => $status->id,
             'body' => \request('body'),
         ]);
 
-        return CommentResource::make($comment);
+        $commentResource = CommentResource::make($comment);
+
+        CommentCreated::dispatch($commentResource);
+
+        return $commentResource;
     }
 }
