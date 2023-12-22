@@ -14960,7 +14960,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(89);
+module.exports = __webpack_require__(92);
 
 
 /***/ }),
@@ -14969,7 +14969,7 @@ module.exports = __webpack_require__(89);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_auth__);
 
 /**
@@ -14993,6 +14993,7 @@ Vue.component('status-form', __webpack_require__(45));
 Vue.component('status-list', __webpack_require__(51));
 Vue.component('friendship-btn', __webpack_require__(78));
 Vue.component('accept-friendship-btn', __webpack_require__(83));
+Vue.component('notification-list', __webpack_require__(88));
 
 
 Vue.mixin(__WEBPACK_IMPORTED_MODULE_0__mixins_auth___default.a);
@@ -58111,6 +58112,150 @@ if (false) {
 
 /***/ }),
 /* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(89)
+/* template */
+var __vue_template__ = __webpack_require__(90)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/NotificationList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-14689614", Component.options)
+  } else {
+    hotAPI.reload("data-v-14689614", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            notifications: []
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        axios.get('/notifications').then(function (res) {
+            _this.notifications = res.data;
+        });
+    }
+});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "nav-item dropdown" }, [
+    _c(
+      "a",
+      {
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          href: "#",
+          dusk: "notifications",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-expanded": "false"
+        }
+      },
+      [_vm._t("default")],
+      2
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "dropdown-menu dropdown-menu-right" },
+      _vm._l(_vm.notifications, function(notification) {
+        return _c(
+          "a",
+          {
+            staticClass: "dropdown-item",
+            attrs: { dusk: notification.id, href: notification.data.link }
+          },
+          [
+            _vm._v(
+              "\n            " +
+                _vm._s(notification.data.message) +
+                "\n        "
+            )
+          ]
+        )
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-14689614", module.exports)
+  }
+}
+
+/***/ }),
+/* 91 */
 /***/ (function(module, exports) {
 
 var user = document.head.querySelector('meta[name="user"]');
@@ -58135,7 +58280,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
