@@ -14991,6 +14991,7 @@ window.EventBus = new Vue();
 
 Vue.component('status-form', __webpack_require__(45));
 Vue.component('status-list', __webpack_require__(51));
+Vue.component('status-list-item', __webpack_require__(55));
 Vue.component('friendship-btn', __webpack_require__(78));
 Vue.component('accept-friendship-btn', __webpack_require__(83));
 Vue.component('notification-list', __webpack_require__(88));
@@ -56614,8 +56615,6 @@ exports.push([module.i, "\n.status-list-transition-move[data-v-0bf1005b] {\r\n  
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__StatusListItem__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__StatusListItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__StatusListItem__);
 //
 //
 //
@@ -56628,11 +56627,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { StatusListItem: __WEBPACK_IMPORTED_MODULE_0__StatusListItem___default.a },
     props: {
         url: String
     },
