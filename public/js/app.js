@@ -14960,7 +14960,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(92);
+module.exports = __webpack_require__(95);
 
 
 /***/ }),
@@ -14969,7 +14969,7 @@ module.exports = __webpack_require__(92);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_auth__);
 
 /**
@@ -58115,7 +58115,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(89)
 /* template */
-var __vue_template__ = __webpack_require__(90)
+var __vue_template__ = __webpack_require__(93)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58159,8 +58159,97 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__NotificationListItem__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__NotificationListItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__NotificationListItem__);
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        NotificationListItem: __WEBPACK_IMPORTED_MODULE_0__NotificationListItem___default.a
+    },
+    data: function data() {
+        return {
+            notifications: []
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        axios.get('/notifications').then(function (res) {
+            _this.notifications = res.data;
+        });
+    }
+});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(91)
+/* template */
+var __vue_template__ = __webpack_require__(92)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/NotificationListItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-537495c7", Component.options)
+  } else {
+    hotAPI.reload("data-v-537495c7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
@@ -58178,22 +58267,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        notification: Object
+    },
     data: function data() {
         return {
-            notifications: []
+            isRead: !!this.notification.read_at
         };
     },
-    created: function created() {
-        var _this = this;
 
-        axios.get('/notifications').then(function (res) {
-            _this.notifications = res.data;
-        });
+    methods: {
+        markAsRead: function markAsRead() {
+            var _this = this;
+
+            axios.post("/read-notifications/" + this.notification.id).then(function (res) {
+                _this.isRead = true;
+            });
+        },
+        markAsUnread: function markAsUnread() {
+            var _this2 = this;
+
+            axios.delete("/read-notifications/" + this.notification.id).then(function (res) {
+                _this2.isRead = false;
+            });
+        }
     }
 });
 
 /***/ }),
-/* 90 */
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "a",
+      {
+        staticClass: "dropdown-item",
+        attrs: { dusk: _vm.notification.id, href: _vm.notification.data.link }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.notification.data.message) + "\n    ")]
+    ),
+    _vm._v(" "),
+    _vm.isRead
+      ? _c(
+          "button",
+          {
+            attrs: { dusk: "mark-as-unread-" + _vm.notification.id },
+            on: {
+              click: function($event) {
+                $event.stopPropagation()
+                return _vm.markAsUnread.apply(null, arguments)
+              }
+            }
+          },
+          [_vm._v("Marcar como NO leído")]
+        )
+      : _c(
+          "button",
+          {
+            attrs: { dusk: "mark-as-read-" + _vm.notification.id },
+            on: {
+              click: function($event) {
+                $event.stopPropagation()
+                return _vm.markAsRead.apply(null, arguments)
+              }
+            }
+          },
+          [_vm._v("Marcar como leída")]
+        )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-537495c7", module.exports)
+  }
+}
+
+/***/ }),
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58221,22 +58380,12 @@ var render = function() {
       "div",
       { staticClass: "dropdown-menu dropdown-menu-right" },
       _vm._l(_vm.notifications, function(notification) {
-        return _c(
-          "a",
-          {
-            staticClass: "dropdown-item",
-            attrs: { dusk: notification.id, href: notification.data.link }
-          },
-          [
-            _vm._v(
-              "\n            " +
-                _vm._s(notification.data.message) +
-                "\n        "
-            )
-          ]
-        )
+        return _c("notification-list-item", {
+          key: notification.id,
+          attrs: { notification: notification }
+        })
       }),
-      0
+      1
     )
   ])
 }
@@ -58251,7 +58400,7 @@ if (false) {
 }
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports) {
 
 var user = document.head.querySelector('meta[name="user"]');
@@ -58276,7 +58425,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
