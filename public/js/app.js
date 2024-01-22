@@ -14960,7 +14960,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(95);
+module.exports = __webpack_require__(97);
 
 
 /***/ }),
@@ -14969,7 +14969,7 @@ module.exports = __webpack_require__(95);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_auth__);
 
 /**
@@ -58115,7 +58115,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(89)
 /* template */
-var __vue_template__ = __webpack_require__(93)
+var __vue_template__ = __webpack_require__(95)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58176,6 +58176,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -58185,7 +58193,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            notifications: []
+            notifications: [],
+            count: ''
         };
     },
     created: function created() {
@@ -58193,7 +58202,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         axios.get('/notifications').then(function (res) {
             _this.notifications = res.data;
+            _this.unreadNotifications();
         });
+
+        EventBus.$on('notification-read', function () {
+            if (_this.count === 1) {
+                return _this.count = '';
+            }
+            _this.count--;
+        });
+        EventBus.$on('notification-unread', function () {
+            _this.count++;
+        });
+    },
+
+    methods: {
+        unreadNotifications: function unreadNotifications() {
+            this.count = this.notifications.filter(function (notification) {
+                return notification.read_at === null;
+            }).length || '';
+        }
     }
 });
 
@@ -58202,17 +58230,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(91)
+}
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(93)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(94)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-537495c7"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -58246,10 +58278,58 @@ module.exports = Component.exports
 
 /***/ }),
 /* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(92);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("51cbd9b7", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nbutton > span[data-v-537495c7] {\n  display: none;\n}\nbutton i:hover + span[data-v-537495c7] {\n  display: inline;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -58280,66 +58360,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         markAsRead: function markAsRead() {
             var _this = this;
 
-            axios.post("/read-notifications/" + this.notification.id).then(function (res) {
+            axios.post('/read-notifications/' + this.notification.id).then(function (res) {
                 _this.isRead = true;
+                EventBus.$emit('notification-read');
             });
         },
         markAsUnread: function markAsUnread() {
             var _this2 = this;
 
-            axios.delete("/read-notifications/" + this.notification.id).then(function (res) {
+            axios.delete('/read-notifications/' + this.notification.id).then(function (res) {
                 _this2.isRead = false;
+                EventBus.$emit('notification-unread');
             });
         }
     }
 });
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "a",
-      {
-        staticClass: "dropdown-item",
-        attrs: { dusk: _vm.notification.id, href: _vm.notification.data.link }
-      },
-      [_vm._v("\n        " + _vm._s(_vm.notification.data.message) + "\n    ")]
-    ),
-    _vm._v(" "),
-    _vm.isRead
-      ? _c(
-          "button",
-          {
-            attrs: { dusk: "mark-as-unread-" + _vm.notification.id },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                return _vm.markAsUnread.apply(null, arguments)
+  return _c(
+    "div",
+    {
+      staticClass: "dropdown-item d-flex align-items-center",
+      class: _vm.isRead ? "" : "bg-light"
+    },
+    [
+      _c(
+        "a",
+        {
+          staticClass: "dropdown-item",
+          attrs: { dusk: _vm.notification.id, href: _vm.notification.data.link }
+        },
+        [
+          _vm._v(
+            "\n        " + _vm._s(_vm.notification.data.message) + "\n    "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.isRead
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-link mr-2",
+              attrs: { dusk: "mark-as-unread-" + _vm.notification.id },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  return _vm.markAsUnread.apply(null, arguments)
+                }
               }
-            }
-          },
-          [_vm._v("Marcar como NO leído")]
-        )
-      : _c(
-          "button",
-          {
-            attrs: { dusk: "mark-as-read-" + _vm.notification.id },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                return _vm.markAsRead.apply(null, arguments)
+            },
+            [
+              _c("i", { staticClass: "far fa-circle" }),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "position-absolute bg-dark text-white ml-2 py-1 px-2 rounded"
+                },
+                [_vm._v("Marcar como NO leída")]
+              )
+            ]
+          )
+        : _c(
+            "button",
+            {
+              staticClass: "btn btn-link mr-2",
+              attrs: { dusk: "mark-as-read-" + _vm.notification.id },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  return _vm.markAsRead.apply(null, arguments)
+                }
               }
-            }
-          },
-          [_vm._v("Marcar como leída")]
-        )
-  ])
+            },
+            [
+              _c("i", { staticClass: "fa fa-circle" }),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "position-absolute bg-dark text-white ml-2 py-1 px-2 rounded"
+                },
+                [_vm._v("Marcar como leída")]
+              )
+            ]
+          )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -58352,7 +58469,7 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58364,28 +58481,35 @@ var render = function() {
       "a",
       {
         staticClass: "nav-link dropdown-toggle",
+        class: _vm.count ? "text-primary font-weight-bold" : "",
         attrs: {
-          href: "#",
           dusk: "notifications",
+          href: "#",
           role: "button",
           "data-toggle": "dropdown",
           "aria-expanded": "false"
         }
       },
-      [_vm._t("default")],
+      [_vm._t("default"), _vm._v(" " + _vm._s(_vm.count) + "\n    ")],
       2
     ),
     _vm._v(" "),
     _c(
       "div",
       { staticClass: "dropdown-menu dropdown-menu-right" },
-      _vm._l(_vm.notifications, function(notification) {
-        return _c("notification-list-item", {
-          key: notification.id,
-          attrs: { notification: notification }
+      [
+        _c("div", { staticClass: "dropdown-header text-center" }, [
+          _vm._v("Notificaciones")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.notifications, function(notification) {
+          return _c("notification-list-item", {
+            key: notification.id,
+            attrs: { notification: notification }
+          })
         })
-      }),
-      1
+      ],
+      2
     )
   ])
 }
@@ -58400,7 +58524,7 @@ if (false) {
 }
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports) {
 
 var user = document.head.querySelector('meta[name="user"]');
@@ -58425,7 +58549,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
