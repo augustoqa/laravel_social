@@ -206,7 +206,7 @@ class RegistrationTest extends TestCase
     {
         $this->post(
             route('register'),
-            $this->userValidData(['email' => 'invalid@email'])
+            $this->userValidData(['email' => 'invalidemail'])
         )->assertSessionHasErrors('email');
     }
 
