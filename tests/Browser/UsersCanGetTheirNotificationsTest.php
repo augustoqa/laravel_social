@@ -66,7 +66,7 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
                 ->visit('/')
                 ->waitFor('@like-btn')
                 ->press('@like-btn')
-                ->pause(1000);
+                ->pause(1500);
 
             $browser1->assertSeeIn('@notifications-count', 1);
         });
