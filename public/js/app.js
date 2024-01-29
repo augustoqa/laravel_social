@@ -2682,7 +2682,11 @@ var render = function render() {
       "data-toggle": "dropdown",
       "aria-expanded": "false"
     }
-  }, [_vm._t("default"), _vm._v(" " + _vm._s(_vm.count) + "\n    ")], 2), _vm._v(" "), _c("div", {
+  }, [_vm._t("default"), _vm._v(" "), _c("span", {
+    attrs: {
+      dusk: "notifications-count"
+    }
+  }, [_vm._v(_vm._s(_vm.count))])], 2), _vm._v(" "), _c("div", {
     staticClass: "dropdown-menu dropdown-menu-right"
   }, [_c("div", {
     staticClass: "dropdown-header text-center"
