@@ -27,4 +27,12 @@ class CommentTest extends TestCase
     {
         $this->assertClassUsesTrait(HasLikes::class, Comment::class);
     }
+
+    /** @test */
+    function a_comment_must_have_a_path()
+    {
+        $comment = factory(Comment::class)->create();
+        $this->assertEquals(route('statuses.show', $comment->status_id) . '#comment-' . $comment->id, $comment->path());
+        // statuses/1#comment-1
+    }
 }
