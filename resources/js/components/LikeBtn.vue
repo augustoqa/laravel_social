@@ -23,14 +23,10 @@ export default {
     methods: {
         toggle() {
             const method = this.model.is_liked ? 'delete' : 'post'
-            axios[method](this.url) 
+            axios[method](this.url)
                 .then(res => {
                     this.model.is_liked = ! this.model.is_liked
-                    if (method === 'delete') {
-                        this.model.likes_count--
-                    } else {
-                        this.model.likes_count++
-                    }
+                    this.model.likes_count = res.data.likes_count
                 })
         },
     },
