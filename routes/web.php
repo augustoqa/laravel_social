@@ -37,6 +37,11 @@ Route::get('@{user}', 'UsersController@show')->name('users.show');
 Route::get('users/{user}/statuses', 'UsersStatusController@index')
     ->name('users.statuses.index');
 
+// Friends routes
+Route::get('friends', 'FriendsController@index')
+    ->name('friends.index')
+    ->middleware('auth');
+
 // Friendships routes
 Route::post('friendships/{recipient}', 'FriendshipsController@store')
     ->name('friendships.store')
