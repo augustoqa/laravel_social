@@ -43,6 +43,9 @@ Route::get('friends', 'FriendsController@index')
     ->middleware('auth');
 
 // Friendships routes
+Route::get('friendships/{recipient}', 'FriendshipsController@show')
+    ->name('friendships.show')
+    ->middleware('auth');
 Route::post('friendships/{recipient}', 'FriendshipsController@store')
     ->name('friendships.store')
     ->middleware('auth');

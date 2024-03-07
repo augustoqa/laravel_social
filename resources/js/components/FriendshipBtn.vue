@@ -12,15 +12,15 @@ export default {
             type: Object,
             required: true,
         },
-        friendshipStatus: {
-            type: String,
-            required: true,
-        },
     },
-    data() {
-        return {
-            localFriendshipStatus: this.friendshipStatus,
-        }
+    data: () =>({
+        friendshipStatus: '',
+    }),
+    created() {
+        axios.get(`/friendships/${this.recipient.name}`)
+            .then(res => {
+                this.friendshipStatus = res.data.friendship_status
+            })
     },
     methods: {
         toggleFriendshipStatus() {
@@ -29,14 +29,14 @@ export default {
 
             axios[method](`friendships/${this.recipient.name}`)
                 .then(res => {
-                    this.localFriendshipStatus = res.data.friendship_status
+                    this.friendshipStatus = res.data.friendship_status
                 })
                 .catch(err => {
                     console.log(err.response.data)
                 })
         },
         getMethod() {
-            if (this.localFriendshipStatus === 'pending' || this.localFriendshipStatus === 'accepted') {
+            if (this.friendshipStatus === 'pending' || this.friendshipStatus === 'accepted') {
                 return 'delete'
             }
             return 'post'
@@ -44,13 +44,13 @@ export default {
     },
     computed: {
         getText() {
-            if (this.localFriendshipStatus === 'pending') {
+            if (this.friendshipStatus === 'pending') {
                 return 'Cancelar solicitud'
             }
-            if (this.localFriendshipStatus === 'accepted') {
+            if (this.friendshipStatus === 'accepted') {
                 return 'Eliminar de mis amigos'
             }
-            if (this.localFriendshipStatus === 'denied') {
+            if (this.friendshipStatus === 'denied') {
                 return 'Solicitud denegada'
             }
             return 'Solicitar amistad'
